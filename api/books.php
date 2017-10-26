@@ -1,21 +1,6 @@
 <?php
 
 
-
-
-$app->get('../config/api/books', function () {
-	require_once('db-config.php');
-    $query = "select * from books order by id";
-    $result = $mysqli->query($query);
-
-    while($row = $result->fetch_assoc()){
-    	$data[] = $row;
-    }
-
-    echo json_encode($data);
-
-});
-
 $app->get('/api/book/{id}', function ($request, $response ) {
 	
 	require_once('../config/db-config.php');
