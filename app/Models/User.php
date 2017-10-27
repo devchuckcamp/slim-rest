@@ -2,11 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 
-class User
+class User extends Model
 {
-	function __construct()
-	{
-		echo 123;
-	}	
+	
+	protected $table = 'users';
+
+	protected $fillable = [
+
+				'username',
+				'password',
+				'email',
+				'fistname',
+				'lastname'
+			];
 }

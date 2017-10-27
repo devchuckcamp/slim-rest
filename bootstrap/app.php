@@ -5,6 +5,8 @@ session_start();
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
+use Respect\Validation\Validator as v;
+
 require __DIR__.'/../vendor/autoload.php';
 
 // $user = new \App\Models\User;
@@ -16,13 +18,40 @@ require __DIR__.'/../vendor/autoload.php';
 $app = new Slim\App([
 		'settings' =>  [
 			'displayErrorDetails'  =>  true,
-		]
+			'db' => [
+				'driver'=>'mysql',
+				'host' => 'localhost',
+				'database' =>  'slim_demo',
+				'username' => 'root',
+				'password' => '',
+				'charset' => 'utf8',
+				'collation' => 'utf8_unicode_ci',
+				'prefix'  =>  '',
+			]
+		],
+		
 	]);
 
 
 
 $container = $app->getContainer();
 
+// Eloquent
+$capsule = new \Illuminate\Database\Capsule\Manager;
+
+$capsule->addConnection($container['settings']['db']);
+
+$capsule->setAsGlobal();
+
+$capsule->bootEloquent();
+
+$container['db'] = function($container) use ($capsule) {
+	return $capsule;
+};
+
+
+
+//View
 $container['view'] = function ($container){
 	$view = new \Slim\Views\Twig(__DIR__.'/../resources/views', [
 			'cache' => false // Update to true on prodction/ disable during development
@@ -40,14 +69,47 @@ $container['view'] = function ($container){
 	return $view;
 };
 
+//Validator
+$container['validator'] = function($container) {
+
+	return new \App\Validation\Validator;
+
+};
+
+
+$container['csrf'] = function($c) {
+	return new \Slim\Csrf\Guard;
+};
+
+//Middleware
+//Displaying Errors
+$app->add(new \App\Middleware\ValidationErrorsMiddleware($container) ); 
+
+//Keeping Data in Forms
+$app->add(new \App\Middleware\OldInputMiddleware($container) ); 
+//Custom Validator
+v::with('App\\Validation\\Rules\\');
+//CSRF
+$app->add($container->csrf);
+
+
 
 $container['HomeController'] = function ($container) {
 	return new \App\Controllers\HomeController($container);
 };
 
+$container['AuthController'] = function ($container) {
+	return new \App\Controllers\Auth\AuthController($container);
+};
+
 $container['CityController'] = function ($container) {
 	return new \App\Controllers\CityController($container );
 };
+
+$container['UserController'] = function ($container) {
+	return new \App\Controllers\UserController($container );
+};
+
 
 require __DIR__.'/../app/routes.php';
 

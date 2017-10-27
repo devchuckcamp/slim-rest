@@ -1,0 +1,101 @@
+{% extends 'templates/app.twig' %}
+
+
+{% block content%}
+	<div class="row">
+		
+	<div class="col-md-6 col-md-offset-3">
+		
+		<div class="panel paneld-default">
+			  
+			<div class="panel-heading">
+				Sign up  
+			</div>
+
+			<div class="panel-body">
+
+
+				<form action="{{ path_for('auth.signup') }}" method="post">
+
+					<div class="form-group {{ errors.username ? ' has-error' : '' }}">
+						<label for="username"></label>
+						<input 
+							type="text" name="username" placeholder="Username" 
+							class="form-control"
+							value="{{ old.username }}" 
+						>
+						{% if errors.username %}
+							<span class="help-block">
+								{{ errors.username | first }}
+							</span>
+						{% endif %}
+
+					</div>
+
+					<div class="form-group {{ errors.email ? ' has-error' : '' }}">
+						<label for="email"></label>
+						<input type="text" name="email"  
+								placeholder="Email" 
+								class="form-control"
+								value="{{ old.email }}"
+						>
+						{% if errors.email %}
+							<span class="help-block">
+								{{ errors.email | first }}
+							</span>
+						{% endif %}
+					</div>
+
+					<div class="form-group {{ errors.password ? ' has-error' : '' }}">
+						<label for="password"></label>
+						<input type="password" name="password" 
+							placeholder="Password" 
+							class="form-control"
+							value="{{ old.password }}"
+						>
+						{% if errors.password %}
+							<span class="help-block">
+								{{ errors.password | first }}
+							</span>
+						{% endif %}
+					</div>
+
+					<div class="form-group {{ errors.firstname ? ' has-error' : '' }}">
+						<label for="firstname"></label>
+						<input type="text" name="firstname" 
+								placeholder="First Name" 
+								class="form-control"
+								value="{{ old.firstname }}"
+						>
+						{% if errors.firstname %}
+							<span class="help-block">
+								{{ errors.firstname | first }}
+							</span>
+						{% endif %}
+					</div>
+
+					<div class="form-group {{ errors.lastname ? ' has-error' : '' }}">
+						<label for="lastname"></label>
+						<input type="text" name="lastname" 
+								placeholder="Last Name" 
+								class="form-control"
+								value="{{ old.lastname }}"
+						>
+						{% if errors.lastname %}
+							<span class="help-block">
+								{{ errors.lastname | first }}
+							</span>
+						{% endif %}
+					</div>
+					<input type="hidden" name="{ nameKey }" value="{ nameKey }">
+    				<input type="hidden" name="{ valueKey }" value="{ valueKey }">
+
+					<input type="submit" name="">
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+	</div>
+{% endblock %}
