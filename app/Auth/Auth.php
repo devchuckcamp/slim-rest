@@ -21,7 +21,8 @@ class Auth
 
 	public function checkAuth()
 	{
-
+		//session_unset($_SESSION['user']);
+		// session_destroy();
 		return isset($_SESSION['user']);
 
 	}

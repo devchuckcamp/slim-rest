@@ -84,10 +84,17 @@ class AuthController extends Controller
 				'password' =>password_hash($request->getParam('password'),
 					PASSWORD_DEFAULT)
 			]);
-			
-		$this->auth->attempt($user->email, $request->getParam('password'));
+		
+		error_log($user);
 
-			return $response->withRedirect($this->router->pathFor('auth.signup') );
+		$attempt = $this->auth->attempt($user->email, $request->getParam('password'));
+
+
+		if($attempt){
+			return $response->withRedirect($this->router->pathFor('home') );
+			
+		}
+		return $response->withRedirect($this->router->pathFor('auth.signup') );
 		// return $response->withStatus(200)->getBody()->write($create->toJson());
 	}
 

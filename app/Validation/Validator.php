@@ -13,7 +13,7 @@ class Validator extends NestedValidationException
 
 	public function validate($request, array $rules)
 	{
-		$_SESSION['errors'] = '';
+		$_SESSION['errors'] = [];
 		foreach ($rules as $field => $rule) {
 			
 			try{
@@ -26,7 +26,7 @@ class Validator extends NestedValidationException
 
 			}
 		}
-
+		
 		$_SESSION['errors'] = $this->errors;
 
 		return $this;
