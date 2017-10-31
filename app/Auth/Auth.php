@@ -9,6 +9,11 @@ class Auth
 
 	public function user()
 	{
+		if(isset($_SESSION['user']) ){
+			$_SESSION['user'] = $_SESSION['user'];
+		}else{
+			$_SESSION['user'] = '';
+		}
 
 		return User::find($_SESSION['user']);
 

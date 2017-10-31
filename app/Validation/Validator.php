@@ -9,8 +9,11 @@ use Respect\Validation\Exceptions\NestedValidationException;
 class Validator extends NestedValidationException
 {
 
+
+
 	public function validate($request, array $rules)
 	{
+		$_SESSION['errors'] = '';
 		foreach ($rules as $field => $rule) {
 			
 			try{
