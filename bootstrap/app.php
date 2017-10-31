@@ -50,25 +50,6 @@ $container['db'] = function($container) use ($capsule) {
 };
 
 
-
-//View
-$container['view'] = function ($container){
-	$view = new \Slim\Views\Twig(__DIR__.'/../resources/views', [
-			'cache' => false // Update to true on prodction/ disable during development
-		]);
-
-
-	$view->addExtension(new \Slim\Views\TwigExtension(
-			
-			$container->router,
-
-			$container->request->getUri()
-
-		));
-
-	return $view;
-};
-
 //Validator
 $container['validator'] = function($container) {
 
@@ -87,6 +68,31 @@ $container['auth'] = function($container) {
 	return new \App\Auth\Auth;
 
 };
+
+
+//View
+$container['view'] = function ($container){
+	$view = new \Slim\Views\Twig(__DIR__.'/../resources/views', [
+			'cache' => false // Update to true on prodction/ disable during development
+		]);
+
+
+	$view->addExtension(new \Slim\Views\TwigExtension(
+			
+			$container->router,
+
+			$container->request->getUri()
+
+		));
+
+	$view->getEnvironment()->addGlobal('auth', [
+			'checkAuth' => $container->auth->checkAuth(),
+			'user' =>  $container->auth->user(),
+		]);
+	return $view;
+};
+
+
 
 //Middleware
 //Displaying Errors
