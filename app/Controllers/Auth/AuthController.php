@@ -12,16 +12,43 @@ use Respect\Validation\Validator as v;
 class AuthController extends Controller
 {
 
+	public function getSignin($request, $response)
+	{
+
+		return $this->view->render($response, 'auth/signin.twig');
+
+	}
+
+	public function postSignin($request, $response)
+	{
+
+		$auth = $this->auth->attempt(
+
+				$request->getParam('email'),
+				$request->getParam('password')
+			
+			);
+
+		if( !$auth) {
+
+			return $response->withRedirect($this->router->pathFor('auth.signin') );
+
+		}
+
+		return $response->withRedirect($this->router->pathFor('home') );
+			
+	}
+
 	public function getSignup($request, $response){
 
 		// var_dump($this->csrf->getTokenNameKey());
 		// var_dump($this->csrf->getTokenValueKey());
-		$nameKey = $this->csrf->getTokenNameKey();
-    	$valueKey = $this->csrf->getTokenValueKey();
-    	$name = $request->getAttribute($nameKey);
-    	$value = $request->getAttribute($valueKey);
+		// $nameKey = $this->csrf->getTokenNameKey();
+  //   	$valueKey = $this->csrf->getTokenValueKey();
+  //   	$name = $request->getAttribute($nameKey);
+  //   	$value = $request->getAttribute($valueKey);
 
-		var_dump($request->getAttribute('csrf_value'));
+		// var_dump($request->getAttribute('csrf_value'));
 
 		return $this->view->render($response, 'auth/signup.twig');
 	}

@@ -87,8 +87,11 @@
 							</span>
 						{% endif %}
 					</div>
-					<input type="hidden" name="{ nameKey }" value="{ nameKey }">
-    				<input type="hidden" name="{ valueKey }" value="{ valueKey }">
+
+					{{ csrf.field | raw }}
+
+					<!-- <input type="hidden" name="csrf_name" value="{ nameKey }">
+    				<input type="hidden" name="csrf_token" value="{ valueKey }"> -->
 
 					<input type="submit" name="">
 				</form>

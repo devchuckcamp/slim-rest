@@ -76,17 +76,27 @@ $container['validator'] = function($container) {
 
 };
 
+$container['csrf'] = function($container) {
 
-$container['csrf'] = function($c) {
 	return new \Slim\Csrf\Guard;
+
+};
+
+$container['auth'] = function($container) {
+
+	return new \App\Auth\Auth;
+
 };
 
 //Middleware
 //Displaying Errors
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container) ); 
-
 //Keeping Data in Forms
 $app->add(new \App\Middleware\OldInputMiddleware($container) ); 
+//Csrf View
+$app->add(new \App\Middleware\CsrfViewMiddleware($container) ); 
+
+
 //Custom Validator
 v::with('App\\Validation\\Rules\\');
 //CSRF

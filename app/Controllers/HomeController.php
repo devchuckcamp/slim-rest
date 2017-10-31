@@ -17,10 +17,10 @@ class HomeController extends Controller
 		//$city->where('province',51);
 		$user = User::find(1);
 
-		return json_encode($user);
+		//return json_encode($user);
 
 		//die();
-		//return $this->container->view->render($response, 'home.twig');
+		return $this->container->view->render($response, 'home.twig');
 	}
 
 }
